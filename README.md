@@ -1,5 +1,20 @@
-# Vue 3 + Vite
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+# Auth learning
 
-Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
+## Actors
+
+- Client
+- Server
+
+## Senario
+
+### Sign in
+
+Client: fill username and password and send to server
+Server: Check if the username exists and has the same password as the client sent
+    - Generate a random token and save somewhere for the username
+    - response to client and send the token
+Client: Store the token in the local storage
+Client: Send token for all requests to server in the "Authorization" header
+
+### Sign up

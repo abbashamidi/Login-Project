@@ -1,0 +1,10 @@
+# Force LF (Unix) line endings for all text files
+* text=auto
+
+# If you specifically want to set LF for certain files, use:
+*.js text eol=lf
+*.vue text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.html text eol=lf
+*.css text eol=lf
