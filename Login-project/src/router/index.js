@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
 import LoginForm from "../components/LoginForm.vue";
 import Dashboard from "../components/Dashboard.vue";
+import randomPageOne from "../components/randomPageOne.vue";
+import randomPageTwo from "../components/randomPageTwo.vue";
 
 const routes = [
   {
@@ -12,6 +14,18 @@ const routes = [
     path: "/dashboard",
     name: "Dashboard",
     component: Dashboard,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/randompageone",
+    name: "randomPageOne",
+    component: randomPageOne,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/randompagetwo",
+    name: "randompagetwo",
+    component: randomPageTwo,
     meta: { requiresAuth: true },
   },
   {
