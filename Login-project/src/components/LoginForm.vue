@@ -18,7 +18,8 @@
 
 <script>
 import { ref } from 'vue';
-import axios from 'axios';  // Import Axios for making HTTP requests
+import { useRouter } from 'vue-router'; // Import useRouter
+import axios from 'axios';
 
 export default {
     name: 'LoginForm',
@@ -26,24 +27,28 @@ export default {
         const username = ref('');
         const password = ref('');
         const errorMessage = ref('');
+        const router = useRouter(); // Initialize router
 
         const loginUser = async () => {
             try {
                 const response = await login(username.value, password.value);
-                errorMessage.value = 'Logged in successfully:';
-                const token = response.data.token
-                storeTokens(token)
+                errorMessage.value = 'Logged in successfully!';
+                const token = response.data.token;
+                storeTokens(token);
+
+                setTimeout(() => {
+                    router.push({ name: 'Dashboard' });
+                }, 2000);
 
             } catch (error) {
                 errorMessage.value = 'Login failed: Invalid credentials';
             }
         };
 
-        function storeTokens(token) {
-            localStorage.setItem('authtoken', token)
-        }
+        const storeTokens = (token) => {
+            localStorage.setItem('authtoken', token);
+        };
 
-        // Function to make a POST request to the backend
         const login = async (username, password) => {
             const response = await axios.post('http://localhost:3000/login', {
                 username,
@@ -58,12 +63,9 @@ export default {
             errorMessage,
             loginUser
         };
-
-
     }
 };
 </script>
-
 
 <style scoped>
 .login-form {

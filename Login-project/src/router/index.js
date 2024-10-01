@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
-import LoginForm from "../components/LoginForm.vue"; // Your login form component
-import HomePage from "../components/HomePage.vue"; // Component to redirect to after login
+import LoginForm from "../components/LoginForm.vue";
+import Dashboard from "../components/Dashboard.vue";
 
 const routes = [
   {
@@ -9,15 +9,34 @@ const routes = [
     component: LoginForm,
   },
   {
-    path: "/home",
-    name: "Home",
-    component: HomePage, // Destination page after login
+    path: "/dashboard",
+    name: "Dashboard",
+    component: Dashboard,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/",
+    redirect: "/login", // Redirect root to login
   },
 ];
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
+});
+
+// Navigation guard
+router.beforeEach((to, from, next) => {
+  const isAuthenticated = !!localStorage.getItem("authtoken");
+
+  if (
+    to.matched.some((record) => record.meta.requiresAuth) &&
+    !isAuthenticated
+  ) {
+    next({ name: "Login" });
+  } else {
+    next();
+  }
 });
 
 export default router;

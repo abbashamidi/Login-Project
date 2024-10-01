@@ -1,12 +1,11 @@
 <script setup>
-import LoginForm from './components/LoginForm.vue';
+import { useRouter } from 'vue-router'; // Import useRouter if needed in the setup
 </script>
 
 <template>
-  <LoginForm />
-   
+  <router-view /> <!-- This will display the current route's component -->
 </template>
 
 <style scoped>
-
+/* Add any global styles here */
 </style>
