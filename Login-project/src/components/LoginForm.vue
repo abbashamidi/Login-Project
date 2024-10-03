@@ -17,9 +17,9 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router'; // Import useRouter
-import axios from 'axios';
+import { useStore } from 'vuex'; // Import useStore to access Vuex
 
 export default {
     name: 'LoginForm',
@@ -28,33 +28,29 @@ export default {
         const password = ref('');
         const errorMessage = ref('');
         const router = useRouter(); // Initialize router
+        const store = useStore(); // Access the Vuex store
+
+        // Computed property to get error message from Vuex store
+        const vuexErrorMessage = computed(() => store.state.auth.errorMessage);
 
         const loginUser = async () => {
             try {
-                const response = await login(username.value, password.value);
-                errorMessage.value = 'Logged in successfully!';
-                const token = response.data.token;
-                storeTokens(token);
+                // Dispatch the login action in Vuex
+                await store.dispatch('loginUser', {
+                    username: username.value,
+                    password: password.value
+                });
 
+                errorMessage.value = 'Logged in successfully!';
+
+                // Navigate to the dashboard after a delay (or directly)
                 setTimeout(() => {
                     router.push({ name: 'Dashboard' });
                 }, 2000);
 
             } catch (error) {
-                errorMessage.value = 'Login failed: Invalid credentials';
+                errorMessage.value = vuexErrorMessage.value || 'Login failed: Invalid credentials';
             }
-        };
-
-        const storeTokens = (token) => {
-            localStorage.setItem('authtoken', token);
-        };
-
-        const login = async (username, password) => {
-            const response = await axios.post('http://localhost:3000/login', {
-                username,
-                password
-            });
-            return response;
         };
 
         return {
@@ -66,6 +62,7 @@ export default {
     }
 };
 </script>
+
 
 <style scoped>
 .login-form {
